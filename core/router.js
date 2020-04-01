@@ -123,7 +123,7 @@ module.exports = async function(router, global){
 							// Append it to endpoint parameters
 							await Object.assign($route_endpoint_arguments.model, {
 								// Call the model with parametes passed
-								[$model] : await require( global.app_model_dir +'/' + $model)($route_endpoint_arguments.database)
+								[$model] : await require( global.app_model_dir +'/model_' + $model)($route_endpoint_arguments.database)
 							});
 						});
 					}
@@ -135,7 +135,7 @@ module.exports = async function(router, global){
 						// Loop thru passed middleware in a route
 						await helper.asyncForEach( $route_middleware, async $middleware => {
 							// Call middleware with some parameters
-							var call_middleware = await require(global.app_middleware_dir + '/' + $middleware)($route_endpoint_arguments);
+							var call_middleware = await require(global.app_middleware_dir + '/middleware_' + $middleware)($route_endpoint_arguments);
 							// if middleware returns status true
 							// Means that is condition is true
 							if(call_middleware.status == true){
@@ -183,16 +183,16 @@ module.exports = async function(router, global){
 										});
 									}
 								}else{
-									try {
+									// try {
 										return await require(global.app_logic_dir + '/' + $route_logic)($route_endpoint_arguments);
-									}catch(e){
-										res.status(404).send({
-											status : false,
-											status_code : 404,
-											status_code_name : 'LOGIC_FILE_INCORRECT_STRUCTURE',
-											status_message : 'Make sure your logic file is correctly sturucted'
-										});
-									}
+									// }catch(err){
+										// res.status(404).send({
+										// 	status : false,
+										// 	status_code : 404,
+										// 	status_code_name : 'LOGIC_FILE_ERROR',
+										// 	status_message : err
+										// });
+									// }
 								}
 							}catch(err){
 								if(err.code == "MODULE_NOT_FOUND"){
