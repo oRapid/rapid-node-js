@@ -72,6 +72,13 @@ let Helper = {
             return result;
         }
     },
+    integer : {
+        random :  function(max){
+            var minm = 0; 
+            var maxm = max; 
+            return Math.floor(Math.random() * (maxm - minm + 1)) + minm; 
+        }
+    },
     file : {
         accept_image_type : ["png", "jpg", "jpeg", "gif"],
         save_base64_file : function(params, callback){
@@ -87,6 +94,9 @@ let Helper = {
       for (let index = 0; index < array.length; index++) {
         await callback(array[index], index, array);
       }
+    },
+    hash: function(string, key = "") {
+        return CryptoJS.SHA256(string);
     },
 };
 
